@@ -13,7 +13,7 @@ class TextToSpeech:
             "Content-Type": "application/json"
         }
 
-    def speak(self, text: str, return_speech: bool = False, output_path=""):
+    def convert(self, text: str, return_speech: bool = False, output_path=""):
         data = {
             "inputs": text,
             "parameters": {}
@@ -44,7 +44,7 @@ class TextToSpeech:
 # Example usage in main.py
 if __name__ == "__main__":
     tts = TextToSpeech()
-    speech = tts.speak("आदरणीय उपस्थित मंडळी, माझ्या भगिनींनो आणि बंधूंनो")
+    speech = tts.convert("आदरणीय उपस्थित मंडळी, माझ्या भगिनींनो आणि बंधूंनो")
     # Get vector from speech
     vector = speech["audio"][0]
     sampling_rate = speech["sampling_rate"]
