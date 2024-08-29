@@ -13,7 +13,7 @@ class TextToSpeech:
             "Content-Type": "application/json"
         }
 
-    def speak(self, text: str, return_speech: bool = False, output_path="") -> dict:
+    def speak(self, text: str, return_speech: bool = False, output_path=""):
         data = {
             "inputs": text,
             "parameters": {}
@@ -30,7 +30,7 @@ class TextToSpeech:
                         rate=speech["sampling_rate"],
                         data=np.array(speech["audio"][0])
                     )
-                    return {"status": "success", "message": f"Audio saved to {output_path}/speech.wav"}
+                    return os.path.join(output_path, "speech.wav")
                 else:
                     return {"status": "error", "message": "Unexpected response format"}
             else:
