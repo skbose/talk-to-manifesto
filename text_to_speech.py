@@ -5,8 +5,8 @@ import numpy as np
 
 class TextToSpeech:
     def __init__(self):
-        # TODO: Change URL
-        self.url = "https://pjt2thzp99yavt03.us-east-1.aws.endpoints.huggingface.cloud"
+        # TODO: CPU API
+        self.url = "https://jphfdzo736duk121.us-east-1.aws.endpoints.huggingface.cloud"
         self.headers = {
             "Accept": "application/json",
             "Authorization": "Bearer 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",
