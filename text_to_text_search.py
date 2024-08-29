@@ -36,7 +36,7 @@ class TextToTextSearch:
         thread_message = self.assistant.client.beta.threads.messages.create(
             self.thread.id,
             role="user",
-            content=query#"आगामी निवडणुकीत तुम्ही कोणती प्रमुख आश्वासने देत आहात? थोडक्यात सांगा.",
+            content=query + "Return short answer in continuous plain text, in marathi without any format."#"आगामी निवडणुकीत तुम्ही कोणती प्रमुख आश्वासने देत आहात? थोडक्यात सांगा.",
             )
         with self.assistant.client.beta.threads.runs.stream(
             thread_id=self.thread.id,
@@ -61,5 +61,5 @@ if __name__ == "__main__":
     print("assistant created")
     # wait = input("press enter to continue")
     search_tool = TextToTextSearch(assistant)
-    results = search_tool.search(text + "Return short answer in continuous plain text, in marathi without any format.")
+    results = search_tool.search(text)
     print(results)
