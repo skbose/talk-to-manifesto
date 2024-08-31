@@ -8,7 +8,7 @@ text_to_speech = TextToSpeech()
 def generate_output(text):
     # Convert search result to speech
     audio = np.array([])
-    for speech in  text_to_speech.convert_stream(text, return_speech = False):
+    for speech in  text_to_speech.convert_stream(text):
         audio = np.concatenate([audio, np.array(speech["audio"][0])])
         yield speech['sampling_rate'], audio
 
