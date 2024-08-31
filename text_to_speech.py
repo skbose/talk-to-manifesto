@@ -2,6 +2,12 @@ import requests
 import scipy
 import os
 import numpy as np
+import re
+
+def split_into_lines(text):
+    # This pattern splits the text at '.', '?', '!', but keeps the delimiter
+    lines = re.split(r'(?<=[.?!])\s+', text.strip())
+    return lines
 
 class TextToSpeech:
     def __init__(self):
@@ -39,7 +45,20 @@ class TextToSpeech:
             return {"status": "error", "message": f"Request failed: {e}"}
         except Exception as e:
             return {"status": "error", "message": f"An error occurred: {e}"}
-            
+
+    def convert_stream(self, text: str):
+        sentences = split_into_lines(text)
+        sentences = [sentence.strip() for sentence in sentences if sentence]
+        
+        for sentence in sentences:
+            data = {
+                "inputs": sentence,
+                "parameters": {}
+            }
+            response = requests.post(self.url, headers=self.headers, json=data)
+            response.raise_for_status()
+            speech = response.json()
+            yield speech
 
 # Example usage in main.py
 if __name__ == "__main__":
