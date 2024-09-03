@@ -3,6 +3,8 @@ import scipy
 import os
 import numpy as np
 import re
+import time
+
 
 def split_into_lines(text):
     # This pattern splits the text at '.', '?', '!', but keeps the delimiter
@@ -11,11 +13,12 @@ def split_into_lines(text):
 
 class TextToSpeech:
     def __init__(self):
+        HF_TOKEN = "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"
         # TODO: CPU API
-        self.url = "https://jphfdzo736duk121.us-east-1.aws.endpoints.huggingface.cloud"
+        self.url = "https://a70oxw6lqxzz0jxp.us-east-1.aws.endpoints.huggingface.cloud"
         self.headers = {
             "Accept": "application/json",
-            "Authorization": "Bearer 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",
+            "Authorization": f"Bearer {HF_TOKEN}",
             "Content-Type": "application/json"
         }
 
@@ -64,6 +67,12 @@ class TextToSpeech:
 if __name__ == "__main__":
     tts = TextToSpeech()
     speech = tts.convert("आदरणीय उपस्थित मंडळी, माझ्या भगिनींनो आणि बंधूंनो")
+
     # Get vector from speech
     vector = speech["audio"][0]
     sampling_rate = speech["sampling_rate"]
+
+    # Save the audio file
+    output_file = "output_speech.wav"
+    scipy.io.wavfile.write(output_file, rate=sampling_rate, data=np.array(vector))
+    print(f"Speech saved to {output_file}")
