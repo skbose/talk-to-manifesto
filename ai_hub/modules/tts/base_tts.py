@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class TTSBase(ABC):
+class BaseTTS(ABC):
     @abstractmethod
     def stream(self, text: str):
         pass

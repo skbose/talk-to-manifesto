@@ -2,7 +2,7 @@ import requests
 import scipy
 import os
 import numpy as np
-from ai_hub.modules.tts.base import TTSBase
+from ai_hub.modules.tts.base_tts import BaseTTS
 from ai_hub.modules.tts.utils import split_into_lines
 
 import logging
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(filename='tts.log', encoding='utf-8', level=logging.DEBUG)
 
 
-class HuggingFaceTTS(TTSBase):
+class HuggingFaceTTS(BaseTTS):
     def __init__(self, url: str, token: str):
         """
         Args:
@@ -34,29 +34,51 @@ class HuggingFaceTTS(TTSBase):
             "Content-Type": "application/json"
         }
     
-    def synthesize(self, data: dict):
+    def _convert_to_int16(self, audio: np.ndarray):
+        """
+        Convert audio to int16
+        """
+        return np.int16(audio / np.max(np.abs(audio)) * np.iinfo(np.int16).max)
+    
+    def synthesize(self, text: str):
         """
         Request through HuggingFace TTS API
         """
+        data = self._prepare_inputs(text)
         try:
             response = requests.post(self.url, headers=self.headers, json=data)
             response.raise_for_status()
-            return response.json()
+            response_dict = response.json()
+            if ("audio" in response_dict and "sampling_rate" in response_dict):
+                # convert audio to int16
+                audio_int16 = self._convert_to_int16(response_dict.get("audio"))
+                return {
+                    "audio": audio_int16,
+                    "sampling_rate": response_dict.get("sampling_rate")
+                }
+            else:
+                logger.error(f"No audio/sampling_rate in response: {response_dict}")
+                return None
         except requests.exceptions.RequestException as e:
             logger.error(f"Request failed: {e}")
             return None
 
+    def _prepare_inputs(self, text: str):
+        """
+        Prepare inputs for HuggingFace TTS API
+        """
+        return {
+            "inputs": text,
+            "parameters": {}
+        }
+    
     def stream(self, text: str):
         """
         Stream audio for the given text
         """
         lines = split_into_lines(text)
         for line in lines:
-            data = {
-                "inputs": line,
-                "parameters": {}
-            }
-            speech = self.synthesize(data)
+            speech = self.synthesize(line)
             if speech:
                 yield speech
 
@@ -82,7 +104,7 @@ if __name__ == "__main__":
     load_dotenv(override=True)
 
     tts = HuggingFaceTTS(
-        url="https://a70oxw6lqxzz0jxp.us-east-1.aws.endpoints.huggingface.cloud",
+        url=os.getenv("HF_TTS_URL"),
         token=os.getenv("HF_TOKEN")
     )
     tts.stream_and_save(text="आदरणीय उपस्थित मंडळी, माझ्या भगिनींनो आणि बंधूंनो", output_dir="output")

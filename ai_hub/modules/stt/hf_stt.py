@@ -1,0 +1,64 @@
+import requests
+import scipy
+import os
+import numpy as np
+from ai_hub.modules.stt.base_stt import BaseSTT
+
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='stt.log', encoding='utf-8', level=logging.DEBUG)
+
+
+class HuggingFaceSTT(BaseSTT):
+    def __init__(self, url: str, token: str):
+        """
+        Args:
+            url (str): HuggingFace STT API URL
+        """
+        self.url = url
+        self.token = token
+        self.headers = self._prepare_header()
+
+    def _prepare_header(self):
+        """
+        Prepare header for HuggingFace STT API
+        """
+        assert self.token is not None, "HF Token is not set"
+        return {
+            "Accept" : "application/json",
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "audio/flac" 
+        }
+    
+    def _prepare_payload(self, audio_file: str) -> dict:
+        """
+        Prepare payload for HuggingFace STT API
+        """
+        assert os.path.exists(audio_file), "Audio file does not exist"
+        with open(audio_file, "rb") as f:
+            audio_data = f.read()
+            
+        return audio_data
+    
+    def extract_text(self, audio_file: str) -> str:
+        """
+        Extract text from audio file
+        """
+        assert os.path.exists(audio_file), "Audio file does not exist"
+        audio_data = self._prepare_payload(audio_file)
+            
+        response = requests.post(self.url, headers=self.headers, data=audio_data)
+        if response.status_code != 200:
+            raise Exception(f"Failed to extract text from audio file. Status code: {response.status_code}, Response: {response.text}")
+        
+        return response.json()["text"]
+
+
+if __name__ == "__main__":
+    # read token from .env file
+    from dotenv import load_dotenv
+    load_dotenv(override=True)
+    
+    stt = HuggingFaceSTT(url=os.getenv("HF_STT_URL"), token=os.getenv("HF_TOKEN"))
+    print(stt.extract_text("output/0.wav"))
