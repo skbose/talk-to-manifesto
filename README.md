@@ -12,10 +12,10 @@ pip install poetry
 poetry install
 ```
 
+# How To Run
+
 ## Prerequisites
 Rename `.env.default` to `.env` and fill in the constants defined in the file.
-
-# How To Run
 
 ## Text-to-Speech
 ```bash
