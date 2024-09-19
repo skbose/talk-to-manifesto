@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class BaseTTS(ABC):
     @abstractmethod
     def stream(self, text: str):
