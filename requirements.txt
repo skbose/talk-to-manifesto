@@ -1,2 +1,0 @@
-gradio @ https://gradio-pypi-previews.s3.amazonaws.com/3dbb412d75a463affc00898b24ade9eb5116e07b/gradio-4.41.0-py3-none-any.whl#sha256=c6a08ed04050cbf8c8d17a5ee3d23af8dc2d793bef53a3a519c299f8a84f07dc
-gradio_client @ git+https://github.com/gradio-app/gradio@4bc495cb68aec014cffffce16c14ee1ddaacf7a3#subdirectory=client/python

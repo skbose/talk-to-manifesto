@@ -10,3 +10,12 @@ __pycache__/
 .docx
 .wav
 .mp3
+
+# log
+*.log
+
+archive/
+*.wav
+
+# .env file
+.env
