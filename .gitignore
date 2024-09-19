@@ -16,3 +16,6 @@ __pycache__/
 
 archive/
 *.wav
+
+# .env file 
+.env
