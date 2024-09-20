@@ -73,5 +73,11 @@ if __name__ == "__main__":
     logging.info(f"Searching for: {search_text}")
     results = search_rag.search(search_text, stream_output=True)
 
+    sentence_buffer = ""
     for result in results:
-        print(result, end="", flush=True)
+        # print(result, end="", flush=True)
+        if result.endswith((".", "!", "?")):
+            print("sentence", sentence_buffer)
+            sentence_buffer = ""
+        else:
+            sentence_buffer += result

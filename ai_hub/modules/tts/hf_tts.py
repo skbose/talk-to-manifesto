@@ -88,12 +88,25 @@ class HuggingFaceTTS(BaseTTS):
         os.makedirs(output_dir, exist_ok=True)
 
         for i, speech in enumerate(self.stream(text)):
-            scipy.io.wavfile.write(
-                os.path.join(output_dir, f"{i}.wav"),
-                rate=speech["sampling_rate"],
-                data=np.array(speech["audio"][0]),
+            self.save_audio(
+                audio=speech["audio"],
+                filename=f"{i}.wav",
+                sampling_rate=speech["sampling_rate"],
+                output_dir=output_dir,
             )
             logger.debug(f"Saved audio to {os.path.join(output_dir, f'{i}.wav')}")
+
+    def save_audio(
+        self, audio: np.ndarray, filename: str, sampling_rate: int, output_dir: str
+    ) -> None:
+        """
+        Save audio to the given output directory
+        """
+        scipy.io.wavfile.write(
+            os.path.join(output_dir, filename),
+            rate=sampling_rate,
+            data=np.array(audio[0]),
+        )
 
 
 if __name__ == "__main__":
