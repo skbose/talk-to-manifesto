@@ -119,4 +119,7 @@ with gr.Blocks() as demo:
 
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(
+        server_name=os.getenv("GRADIO_SERVER_IP"),
+        server_port=os.getenv("GRADIO_SERVER_PORT"),
+    )
