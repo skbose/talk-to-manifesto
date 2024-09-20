@@ -105,7 +105,7 @@ class HuggingFaceTTS(BaseTTS):
         scipy.io.wavfile.write(
             os.path.join(output_dir, filename),
             rate=sampling_rate,
-            data=np.array(audio[0]),
+            data=np.array(audio),
         )
 
 
