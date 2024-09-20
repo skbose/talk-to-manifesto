@@ -15,6 +15,7 @@ llvmlite = "^0.43.0"
 librosa = "^0.10.2.post1"
 pre-commit = "^3.8.0"
 isort = "^5.13.2"
+openai = "^1.46.1"
 
 
 [build-system]
