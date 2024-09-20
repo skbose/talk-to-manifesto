@@ -15,3 +15,9 @@ def save_wav_file(
         rate=sampling_rate,
         data=audio,
     )
+
+
+def add_pause_to_audio(audio: np.ndarray, duration: float, sr: int):
+    pause_samples = int(duration * sr)
+    pause_audio = np.zeros(pause_samples, dtype=np.int16)
+    return np.concatenate((audio, pause_audio))

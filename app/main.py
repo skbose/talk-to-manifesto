@@ -9,7 +9,7 @@ import gradio as gr
 from ai_hub.modules.ir_agent.search_rag import SearchRagOpenAI
 from ai_hub.modules.stt.openai_stt import OpenAIStt
 from ai_hub.modules.tts.hf_tts import HuggingFaceTTS
-from ai_hub.modules.utils import save_wav_file
+from ai_hub.modules.utils import add_pause_to_audio, save_wav_file
 
 logging.basicConfig(level=logging.INFO)
 dotenv.load_dotenv(override=True)
@@ -59,6 +59,12 @@ def tts_task(rag_thread: threading.Thread):
                 sentence = sentence_to_process.get()
             audio_output = tts.synthesize(sentence)
             if audio_output:
+                # TODO: handle this properly for stereo audio
+                # currently, we are taking the first channel only
+                audio_output["audio"] = audio_output["audio"][0]
+                audio_output["audio"] = add_pause_to_audio(
+                    audio_output["audio"], duration=0.5, sr=16000
+                )
                 tts.save_audio(
                     audio=audio_output["audio"],
                     filename=f"{filename_idx}.wav",
@@ -71,6 +77,7 @@ def tts_task(rag_thread: threading.Thread):
                     )
                 filename_idx += 1
                 logging.info(f"Generated audio for: {sentence}")
+
     logging.info("TTS task completed")
     logging.info(f"Sentence queue size: {sentence_to_process.qsize()}")
     logging.info(f"Sentence processed queue size: {sentence_processed.qsize()}")
@@ -121,5 +128,5 @@ with gr.Blocks() as demo:
 if __name__ == "__main__":
     demo.launch(
         server_name=os.getenv("GRADIO_SERVER_IP"),
-        server_port=os.getenv("GRADIO_SERVER_PORT"),
+        server_port=int(os.getenv("GRADIO_SERVER_PORT")),
     )
