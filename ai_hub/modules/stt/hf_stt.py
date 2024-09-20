@@ -57,9 +57,7 @@ class HuggingFaceSTT(BaseSTT):
         assert os.path.exists(audio_file), "Audio file does not exist"
 
         audio_data = self._prepare_payload(audio_file)
-        response = requests.post(
-            self.url, headers=self.headers, json=audio_data
-        )
+        response = requests.post(self.url, headers=self.headers, json=audio_data)
 
         if response.status_code != 200:
             raise Exception(
@@ -76,7 +74,5 @@ if __name__ == "__main__":
 
     load_dotenv(override=True)
 
-    stt = HuggingFaceSTT(
-        url=os.getenv("HF_STT_URL"), token=os.getenv("HF_TOKEN")
-    )
+    stt = HuggingFaceSTT(url=os.getenv("HF_STT_URL"), token=os.getenv("HF_TOKEN"))
     print(stt.extract_text("output/0.wav"))

@@ -1,8 +1,9 @@
 # OpenAI STT class
 
-from openai import OpenAI
 import os
+
 from dotenv import load_dotenv
+from openai import OpenAI
 
 
 class OpenAIStt:
@@ -12,8 +13,7 @@ class OpenAIStt:
     def extract_text(self, audio_file: str) -> str:
         with open(audio_file, "rb") as audio_file:
             transcription = self.client.audio.transcriptions.create(
-                model="whisper-1",
-                file=audio_file
+                model="whisper-1", file=audio_file
             )
             return transcription.text
 
