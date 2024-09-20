@@ -9,6 +9,6 @@ ASSISTANT_INSTRUCTIONS = (
     "तुम्हाला एका राजकारण्याचा वचननामा  दिला जातो. आता जनता तुम्हाला प्रश्न विचारेल "
     "आणि दिलेल्या वचननाम्याच्या आधारे तुम्हाला त्यांची उत्तरे द्यावी लागतील."
 )
-ASSISTANT_MODEL = "gpt-3.5-turbo"
+ASSISTANT_MODEL = "gpt-4o-mini"
 TEXT_FILE_PATHS = [os.path.join(PROJECT_ROOT, "resources/manifesto.docx")]
 RESPONSE_FORMAT = "Return an elaborate answer in marathi without any format."

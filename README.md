@@ -26,3 +26,8 @@ poetry run python -m ai_hub.modules.tts.hf_tts
 ```bash
 poetry run python -m ai_hub.modules.stt.hf_stt
 ```
+
+## Run the app
+```bash
+python -m app.main
+```
