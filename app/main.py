@@ -93,15 +93,12 @@ def generate_audio_output(tts_thread: threading.Thread, sentence_processed: Queu
 
 def process_audio(audio):
     sr, raw = audio
-    print(sr, raw.shape)
     # save as a wav file
     save_wav_file(raw, "input.wav", sr, TEMPORARY_AUDIO_DIR)
     input_audio_path = os.path.join(TEMPORARY_AUDIO_DIR, "input.wav")
 
     transcript = stt.extract_text(input_audio_path)
     logging.info(f"Transcription: {transcript}")
-
-    import threading
 
     # Start rag_task in a separate thread
     rag_thread = threading.Thread(target=rag_task, args=(transcript,))
