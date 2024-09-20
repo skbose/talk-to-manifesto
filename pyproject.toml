@@ -15,8 +15,20 @@ llvmlite = "^0.43.0"
 librosa = "^0.10.2.post1"
 pre-commit = "^3.8.0"
 isort = "^5.13.2"
+openai = "^1.46.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E501"]

@@ -52,17 +52,13 @@ class HuggingFaceTTS(BaseTTS):
             response_dict = response.json()
             if "audio" in response_dict and "sampling_rate" in response_dict:
                 # convert audio to int16
-                audio_int16 = self._convert_to_int16(
-                    response_dict.get("audio")
-                )
+                audio_int16 = self._convert_to_int16(response_dict.get("audio"))
                 return {
                     "audio": audio_int16,
                     "sampling_rate": response_dict.get("sampling_rate"),
                 }
             else:
-                logger.error(
-                    f"No audio/sampling_rate in response: {response_dict}"
-                )
+                logger.error(f"No audio/sampling_rate in response: {response_dict}")
                 return None
         except requests.exceptions.RequestException as e:
             logger.error(f"Request failed: {e}")
@@ -97,9 +93,7 @@ class HuggingFaceTTS(BaseTTS):
                 rate=speech["sampling_rate"],
                 data=np.array(speech["audio"][0]),
             )
-            logger.debug(
-                f"Saved audio to {os.path.join(output_dir, f'{i}.wav')}"
-            )
+            logger.debug(f"Saved audio to {os.path.join(output_dir, f'{i}.wav')}")
 
 
 if __name__ == "__main__":
@@ -108,9 +102,7 @@ if __name__ == "__main__":
 
     load_dotenv(override=True)
 
-    tts = HuggingFaceTTS(
-        url=os.getenv("HF_TTS_URL"), token=os.getenv("HF_TOKEN")
-    )
+    tts = HuggingFaceTTS(url=os.getenv("HF_TTS_URL"), token=os.getenv("HF_TOKEN"))
     tts.stream_and_save(
         text="आदरणीय उपस्थित मंडळी, माझ्या भगिनींनो आणि बंधूंनो", output_dir="output"
     )
