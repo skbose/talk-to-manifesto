@@ -5,6 +5,7 @@ from openai import OpenAI
 from ai_hub.modules.ir_agent.assistant import Assistant
 from ai_hub.modules.ir_agent.constants import (
     ASSISTANT_INSTRUCTIONS,
+    ASSISTANT_INSTRUCTIONS_2,
     ASSISTANT_MODEL,
     ASSISTANT_NAME,
     RESPONSE_FORMAT,
@@ -28,7 +29,7 @@ class SearchRagOpenAI:
             openai_client=self.openai_client,
             vector_store_name=VECTOR_STORE_NAME,
             assistant_name=ASSISTANT_NAME,
-            assistant_instructions=ASSISTANT_INSTRUCTIONS,
+            assistant_instructions=ASSISTANT_INSTRUCTIONS_2,
             assistant_model=ASSISTANT_MODEL,
         )
 
